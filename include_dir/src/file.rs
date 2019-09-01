@@ -1,6 +1,9 @@
-use std::fmt::{self, Debug, Formatter};
-use std::path::Path;
-use std::str;
+use std::{
+    fmt::{self, Debug, Formatter},
+    fs,
+    path::Path,
+    str,
+};
 
 /// A file with its contents stored in a `&'static [u8]`.
 #[derive(Copy, Clone, PartialEq)]
@@ -26,6 +29,11 @@ impl<'a> File<'a> {
     /// The file's contents interpreted as a string.
     pub fn contents_utf8(&self) -> Option<&'a str> {
         str::from_utf8(self.contents()).ok()
+    }
+
+    /// Writes the file's contents to a location on disk.
+    pub fn write_to<S: AsRef<Path>>(&self, path: S) -> io::Result<()> {
+        fs::write(path, self.contents())
     }
 }
 

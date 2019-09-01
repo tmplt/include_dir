@@ -1,7 +1,7 @@
 use file::File;
 use glob::{Pattern, PatternError};
 use globs::{DirEntry, Globs};
-use std::path::Path;
+use std::{fs, io, path::Path};
 
 /// A directory entry.
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -87,5 +87,37 @@ impl<'a> Dir<'a> {
         let dirs = self.dirs().into_iter().map(|d| DirEntry::Dir(*d));
 
         files.chain(dirs)
+    }
+
+    /// Writes the contents of this directory to disk.
+    ///
+    /// In the case of error, a partially extracted directory may remain on
+    /// the filesystem.
+    pub fn extract<S: AsRef<Path>>(&self, target_dir: S) -> io::Result<()> {
+        let target_dir = target_dir.as_ref();
+
+        fs::create_dir_all(target_dir)?;
+
+        for file in self.files() {
+            let name = file
+                .path()
+                .filename()
+                .expect("All files are guaranteed to have a filename");
+
+            let dest = target_dir.join(name);
+            file.write_to(&dest)?;
+        }
+
+        for dir in self.dirs() {
+            let name = file
+                .path()
+                .filename()
+                .expect("All directories are guaranteed to have a name");
+
+            let dest = target_dir.join(name);
+            dir.extract(&dest)?;
+        }
+
+        Ok(())
     }
 }
