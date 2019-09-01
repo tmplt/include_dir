@@ -1,6 +1,6 @@
 use std::{
     fmt::{self, Debug, Formatter},
-    fs,
+    fs, io,
     path::Path,
     str,
 };

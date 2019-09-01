@@ -39,7 +39,7 @@
 //!
 //! - **example:** compile in an example of the embedded directory tree
 
-#![deny(missing_docs, missing_copy_implementations, missing_debug_implementations)]
+#![deny(missing_copy_implementations, missing_debug_implementations)]
 
 #[allow(unused_imports)]
 #[macro_use]

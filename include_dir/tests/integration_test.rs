@@ -14,6 +14,11 @@ fn included_all_files() {
     validate_directory(PARENT_DIR, root, root);
 }
 
+#[test]
+fn extract_to_disk() {
+    PARENT_DIR.extract("/tmp/extracted").unwrap();
+}
+
 fn validate_directory(dir: Dir, path: &Path, root: &Path) {
     for entry in path.read_dir().unwrap() {
         let entry = entry.unwrap().path();

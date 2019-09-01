@@ -101,7 +101,7 @@ impl<'a> Dir<'a> {
         for file in self.files() {
             let name = file
                 .path()
-                .filename()
+                .file_name()
                 .expect("All files are guaranteed to have a filename");
 
             let dest = target_dir.join(name);
@@ -109,9 +109,9 @@ impl<'a> Dir<'a> {
         }
 
         for dir in self.dirs() {
-            let name = file
+            let name = dir
                 .path()
-                .filename()
+                .file_name()
                 .expect("All directories are guaranteed to have a name");
 
             let dest = target_dir.join(name);
