@@ -95,7 +95,8 @@ impl<'a> Dir<'a> {
         {
             let mut fsf = fs::OpenOptions::new()
                 .write(true)
-                .create_new(true)
+                .create(true)
+                .truncate(true)
                 .open(path.join(file.path()))?;
             fsf.write_all(file.contents())?;
             fsf.sync_all()?;
